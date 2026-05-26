@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RTSP Player</title>
+  <link rel="stylesheet" href="player.css" />
+</head>
+<body>
+  <div id="directBar" class="direct-bar hidden">
+    <input id="urlInput" placeholder="rtsp://user:pass@192.168.1.64:554/Streaming/Channels/101" />
+    <button id="playBtn">播放</button>
+    <button id="stopBtn">停止</button>
+  </div>
+  <main id="stage" class="stage">
+    <canvas id="video"></canvas>
+    <div id="overlay" class="overlay">
+      <div id="status" class="status">等待 RTSP URL…</div>
+      <div id="stats" class="stats"></div>
+    </div>
+  </main>
+  <script type="module" src="player.js"></script>
+</body>
+</html>
