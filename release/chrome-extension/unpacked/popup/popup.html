@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>RTSP Runtime</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <h1>RTSP Web Player</h1>
+  <div id="nativeStatus" class="status">检测中…</div>
+  <button id="checkBtn">重新检测 Native Runtime</button>
+  <button id="openPlayerBtn">打开独立播放器</button>
+
+  <section>
+    <h2>允许使用组件的网页来源</h2>
+    <p>网页里写 <code>&lt;rtsp-player url="rtsp://..."&gt;</code> 前，需要把页面 origin 加到这里。</p>
+    <div class="row">
+      <input id="originInput" placeholder="https://your-app.example.com" />
+      <button id="addOriginBtn">添加</button>
+    </div>
+    <ul id="originList"></ul>
+  </section>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
