@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>RTSP Runtime</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <h1>RTSP Web Player</h1>
+  <div id="nativeStatus" class="status">检测中…</div>
+  <div class="actions">
+    <button id="checkBtn">重新检测 Native Runtime</button>
+    <button id="openPlayerBtn">打开独立播放器</button>
+  </div>
+
+  <section>
+    <h2>允许使用组件的网页来源</h2>
+    <p>网页里写 <code>&lt;rtsp-player url="rtsp://..."&gt;</code> 前，需要把页面 origin 加到这里。</p>
+    <div class="row">
+      <input id="originInput" placeholder="https://your-app.example.com" />
+      <button id="addOriginBtn">添加</button>
+    </div>
+    <ul id="originList"></ul>
+  </section>
+
+  <section>
+    <h2>日志与诊断</h2>
+    <p>客户无法播放时，点击刷新后复制日志发给技术支持。日志会自动遮蔽 RTSP 用户名密码。</p>
+    <div class="actions">
+      <button id="refreshLogsBtn">刷新日志</button>
+      <button id="copyLogsBtn">复制日志</button>
+      <button id="clearLogsBtn">清空日志</button>
+      <button id="restartGatewayBtn">重启 Native</button>
+    </div>
+    <div id="diagnosticStatus" class="diagnostic">等待刷新…</div>
+    <textarea id="logOutput" readonly spellcheck="false" placeholder="日志会显示在这里"></textarea>
+  </section>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

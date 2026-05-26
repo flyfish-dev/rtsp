@@ -1,0 +1,359 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RTSP - WebRTC-first RTSP Player</title>
+  <meta name="description" content="RTSP WebRTC-first player with Chrome extension, Electron/Tauri desktop apps, Go native gateway, and universal JS React Vue components." />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <script type="module" crossorigin src="/assets/index-Bry4KgLl.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-4M5QT305.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#home">RTSP</a>
+    <div class="top-actions">
+      <nav class="primary-nav" aria-label="Primary">
+        <a href="#schemes" data-i18n="nav.schemes">方案</a>
+        <a href="#demo" data-i18n="nav.demo">Demo</a>
+        <a href="#sdk" data-i18n="nav.sdk">SDK</a>
+        <a href="#docs" data-i18n="nav.docs">文档</a>
+        <a href="#validation" data-i18n="nav.validation">验证</a>
+        <button class="nav-button" id="open-install-assistant" type="button" data-i18n="nav.install">安装</button>
+        <a href="https://github.com/flyfish-dev/rtsp">GitHub</a>
+      </nav>
+      <div class="lang-switch" aria-label="Documentation language">
+        <button type="button" data-lang-switch="zh">中文</button>
+        <button type="button" data-lang-switch="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">WebRTC First + Go Gateway + WebCodecs Fallback</p>
+        <h1>RTSP</h1>
+        <p class="lead">
+          面向业务网页和桌面应用的 RTSP 播放方案：默认 WebRTC 低延迟硬解，
+          兼容 H.264/H.265；兼容性不足时自动回退 WebSocket + WebCodecs。
+        </p>
+        <div class="actions">
+          <a class="button primary" href="#demo">在线体验</a>
+          <button class="button" id="hero-install-assistant" type="button">一键安装</button>
+          <a class="button" href="#quickstart">快速开始</a>
+          <a class="button" href="#docs">查看文档</a>
+        </div>
+      </div>
+      <figure class="hero-media">
+        <img src="/images/public-rtsp-e2e.png" alt="RTSP player rendering a public H.264 RTSP stream" />
+        <figcaption>公网 RTSP 源全链路验证：WebRTC first · WebCodecs fallback · queue 0</figcaption>
+      </figure>
+    </section>
+
+    <section id="schemes" class="band">
+      <div class="section-head">
+        <p class="eyebrow">Three Delivery Schemes</p>
+        <h2>三种交付方案</h2>
+      </div>
+      <div class="scheme-grid">
+        <article class="scheme">
+          <h3>Chrome 扩展 Runtime</h3>
+          <p>适合统一管控的业务页面。安装扩展和 Native Host 后，页面直接写原生标签。</p>
+          <pre><code>&lt;rtsp-player
+  url="rtsp://user:pass@camera/stream"
+  width="960"
+  height="540"
+  autoplay
+  controls&gt;&lt;/rtsp-player&gt;</code></pre>
+          <ul>
+            <li>content script 自动挂载组件</li>
+            <li>popup 管理 allowed origins、日志与诊断</li>
+            <li>Native Messaging 只走启动和控制面</li>
+          </ul>
+        </article>
+        <article class="scheme">
+          <h3>通用组件 SDK</h3>
+          <p>适合应用团队显式接入。内置 Web Component、React、Vue 和免构建脚本。</p>
+          <pre><code>import { RtspPlayer } from "@rtsp/player/react";
+
+&lt;RtspPlayer
+  extensionId="YOUR_EXTENSION_ID"
+  url="rtsp://camera/stream"
+  autoplay
+  controls
+/&gt;</code></pre>
+          <ul>
+            <li>plain JS / script tag 开箱即用</li>
+            <li>React 和 Vue 封装保持同一事件语义</li>
+            <li>预构建 dist 可直接进入业务仓库</li>
+          </ul>
+        </article>
+        <article class="scheme">
+          <h3>Electron / Tauri 免插件</h3>
+          <p>适合桌面监控台和内网工具。应用打包 Go sidecar，无需安装浏览器插件。</p>
+          <pre><code>&lt;rtsp-player
+  runtime="desktop"
+  transport="auto"
+  codec="auto"
+  url="rtsp://camera/stream"
+  autoplay
+  controls&gt;&lt;/rtsp-player&gt;</code></pre>
+          <ul>
+            <li>WebRTC first，WebSocket fallback</li>
+            <li>Electron IPC / Tauri command 启动 runtime</li>
+            <li>H.265 通过能力探测启用</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="demo" class="demo-section">
+      <div class="section-head">
+        <p class="eyebrow">Online Demo</p>
+        <h2>打开就能试，装好 runtime 就能播真实 RTSP</h2>
+        <p class="lead">
+          默认 Demo 使用浏览器 Canvas 模拟低延迟监控画面，适合快速体验布局、状态、控制和响应。
+          真实 RTSP 体验需要先安装 Chrome 扩展与 Native Runtime。播放时优先尝试 WebRTC，
+          兼容性不足时自动切换到 WebSocket/WebCodecs。
+        </p>
+      </div>
+
+      <div class="demo-grid">
+        <article class="demo-stage" aria-label="RTSP visual demo">
+          <div class="demo-toolbar">
+            <div>
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="demo-state">Live Preview</span>
+            </div>
+            <button class="icon-button" id="demo-toggle" type="button" aria-pressed="true">Pause</button>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="demo-canvas" width="1280" height="720"></canvas>
+            <div class="stream-hud" aria-hidden="true">
+              <span>RTSP/TCP</span>
+              <span>WebRTC First</span>
+              <span>Annex-B Fallback</span>
+            </div>
+          </div>
+          <dl class="demo-stats" aria-label="Demo playback statistics">
+            <div><dt>FPS</dt><dd id="demo-fps">60</dd></div>
+            <div><dt>Latency</dt><dd id="demo-latency">48ms</dd></div>
+            <div><dt>Queue</dt><dd id="demo-queue">0</dd></div>
+            <div><dt>Dropped</dt><dd id="demo-dropped">0</dd></div>
+          </dl>
+        </article>
+
+        <article class="live-lab" aria-label="Real RTSP demo">
+          <p class="eyebrow">Real Stream Lab</p>
+          <h3>真实 RTSP 体验台</h3>
+          <form id="live-demo-form" class="live-form">
+            <label>
+              Chrome 扩展 ID
+              <input id="live-extension-id" name="extensionId" autocomplete="off" placeholder="giegomfhcmgebjhdiihnjohoinkbcjbh" />
+            </label>
+            <label>
+              RTSP URL
+              <input id="live-rtsp-url" name="url" autocomplete="off" placeholder="rtsp://user:pass@camera/Streaming/Channels/101" />
+            </label>
+            <div class="live-actions">
+              <button class="button primary" type="submit">启动真实播放</button>
+              <button class="button" id="live-stop" type="button">停止</button>
+            </div>
+          </form>
+          <p id="live-demo-status" class="demo-note" role="status">
+            先在扩展 popup 中授权 <code>https://rtsp.flyfish.dev</code>，再启动真实播放。
+          </p>
+          <div id="live-player-mount" class="live-player-mount">
+            <div class="mount-placeholder">
+              <strong>等待真实 RTSP 输入</strong>
+              <span>安装 runtime 后，这里会挂载扩展播放器 iframe。</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="quickstart" class="split">
+      <div>
+        <p class="eyebrow">Quickstart</p>
+        <h2>四步跑起来</h2>
+        <ol class="steps">
+          <li>下载并运行当前系统的图形安装器。</li>
+          <li>安装完成后，按提示打开 Chrome 扩展页。</li>
+          <li>开启 Developer mode，点击 Load unpacked，选择安装器准备好的 extension 目录。</li>
+          <li>回到在线 Demo 或业务页面，填入 RTSP 地址开始播放。</li>
+        </ol>
+      </div>
+      <div class="terminal">
+        <pre><code>npm install
+npm run build
+cd native && go test ./...
+
+# public validation stream
+rtsp://9627b0bf2a7b.entrypoint.cloud.wowza.com:1935/app-p5260J38/66abe4b9_stream1</code></pre>
+      </div>
+    </section>
+
+    <section id="sdk" class="band sdk-band">
+      <div class="section-head">
+        <p class="eyebrow">Universal Components</p>
+        <h2>JS、React、Vue 同一运行时</h2>
+      </div>
+      <div class="tabs" role="tablist" aria-label="SDK examples">
+        <button class="tab active" type="button" data-tab="web">Web</button>
+        <button class="tab" type="button" data-tab="react">React</button>
+        <button class="tab" type="button" data-tab="vue">Vue</button>
+      </div>
+      <div class="code-panels">
+        <pre class="code-panel active" data-panel="web"><code>&lt;script
+  src="/rtsp-player-sdk.js"
+  data-extension-id="YOUR_EXTENSION_ID"&gt;&lt;/script&gt;
+
+&lt;rtsp-player
+  url="rtsp://camera/stream"
+  transport="auto"
+  codec="auto"
+  width="960"
+  height="540"
+  autoplay
+  controls&gt;&lt;/rtsp-player&gt;</code></pre>
+        <pre class="code-panel" data-panel="react"><code>import { RtspPlayer } from "@rtsp/player/react";
+
+export function Camera() {
+  return (
+    &lt;RtspPlayer
+      extensionId="YOUR_EXTENSION_ID"
+      url="rtsp://camera/stream"
+      transport="auto"
+      codec="auto"
+      width="100%"
+      height={540}
+      autoplay
+      controls
+    /&gt;
+  );
+}</code></pre>
+        <pre class="code-panel" data-panel="vue"><code>&lt;script setup&gt;
+import { RtspPlayer } from "@rtsp/player/vue";
+&lt;/script&gt;
+
+&lt;template&gt;
+  &lt;RtspPlayer
+    extension-id="YOUR_EXTENSION_ID"
+    url="rtsp://camera/stream"
+    transport="auto"
+    codec="auto"
+    width="100%"
+    :height="540"
+    autoplay
+    controls
+  /&gt;
+&lt;/template&gt;</code></pre>
+      </div>
+    </section>
+
+    <section id="docs" class="docs-reader-section">
+      <aside class="docs-sidebar">
+        <p class="eyebrow" data-i18n="docs.eyebrow">Docs</p>
+        <h2 data-i18n="docs.title">文档</h2>
+        <p class="docs-intro" data-i18n="docs.intro">所有项目文档都可以在这里沉浸式阅读，左侧切换目录，右侧渲染 Markdown 内容。</p>
+        <nav class="docs-nav" id="docs-nav" aria-label="Documentation navigation"></nav>
+      </aside>
+      <article class="docs-content" id="docs-content" aria-live="polite">
+        <div class="docs-loading" data-i18n="docs.loading">正在加载文档…</div>
+      </article>
+    </section>
+
+    <section id="validation" class="validation">
+      <div>
+        <p class="eyebrow">Validated</p>
+        <h2>已用公网 RTSP 源完成真实验证</h2>
+        <p>
+          浏览器 E2E 收到 <code>RTSP_PLAYER_READY</code>，截图像素校验通过。
+          新版默认 WebRTC first，并保留 H.264/H.265 Annex-B 回退。
+        </p>
+      </div>
+      <dl class="metrics">
+        <div><dt>Codec</dt><dd>H.264/H.265</dd></div>
+        <div><dt>FPS</dt><dd>30+</dd></div>
+        <div><dt>Queue</dt><dd>0</dd></div>
+        <div><dt>Transport</dt><dd>WebRTC first</dd></div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <span class="footer-brand">RTSP</span>
+      <span>Chrome Runtime, Desktop Native, Go WebRTC Gateway.</span>
+    </div>
+    <div class="support-links" aria-label="Contact and donation">
+      <figure>
+        <img src="/images/contact.jpg" alt="客服二维码" loading="lazy" />
+        <figcaption>客服联系</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/donate-wx.jpg" alt="微信打赏二维码" loading="lazy" />
+        <figcaption>微信打赏</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/donate-alipay.jpg" alt="支付宝打赏二维码" loading="lazy" />
+        <figcaption>支付宝打赏</figcaption>
+      </figure>
+      <figure>
+        <img src="/images/mp.png" alt="公众号" loading="lazy" />
+        <figcaption>关注我们</figcaption>
+      </figure>
+    </div>
+  </footer>
+
+  <div class="install-dialog" id="install-dialog" aria-hidden="true">
+    <div class="install-backdrop" data-install-close></div>
+    <section class="install-panel" role="dialog" aria-modal="true" aria-labelledby="install-title">
+      <button class="install-close" type="button" data-install-close aria-label="关闭安装助手">×</button>
+      <p class="eyebrow">Install Assistant</p>
+      <h2 id="install-title">安装 RTSP Runtime</h2>
+      <p class="install-lead">
+        下载当前系统的安装器，完成本地 Runtime 与 Chrome 扩展配置。安装后回到这里即可播放真实 RTSP。
+      </p>
+      <div class="install-status-grid">
+        <div>
+          <span>Chrome 扩展</span>
+          <strong id="install-extension-status">检测中</strong>
+        </div>
+        <div>
+          <span>Native Runtime</span>
+          <strong id="install-native-status">等待扩展响应</strong>
+        </div>
+        <div>
+          <span>当前站点授权</span>
+          <strong id="install-origin-status">待检测</strong>
+        </div>
+      </div>
+      <div class="installer-recommendation">
+        <h3 id="installer-recommend-title">选择安装包</h3>
+        <p id="installer-recommend-copy">我们会根据当前系统推荐合适的安装包。</p>
+        <a class="button primary" id="recommended-installer" href="/downloads/rtsp-macos-installer.dmg" download="rtsp-macos-installer.dmg">下载推荐安装包</a>
+      </div>
+      <div class="installer-list" id="installer-list" aria-label="Installers">
+        <a data-installer-platform="mac" href="/downloads/rtsp-macos-installer.dmg" download="rtsp-macos-installer.dmg">macOS 安装器</a>
+        <a data-installer-platform="mac" href="/downloads/rtsp-macos-installer.zip" download="rtsp-macos-installer.zip">macOS ZIP 备用包</a>
+        <a data-installer-platform="windows" href="/downloads/rtsp-windows-installer.zip" download="rtsp-windows-installer.zip">Windows 安装器</a>
+        <a data-installer-platform="linux" href="/downloads/rtsp-linux-installer.tar.gz" download="rtsp-linux-installer.tar.gz">Linux 安装器</a>
+      </div>
+      <ol class="install-steps">
+        <li>运行安装器，等待提示安装完成。</li>
+        <li>在打开的 Chrome 扩展页启用 Developer mode。</li>
+        <li>点击 Load unpacked，选择安装器准备好的 extension 目录。</li>
+        <li>返回本页，点击重新检测。</li>
+      </ol>
+      <div class="install-actions">
+        <button class="button" id="recheck-install-status" type="button">重新检测</button>
+        <a class="button" href="#docs/installers.md">安装文档</a>
+      </div>
+    </section>
+  </div>
+
+</body>
+</html>
