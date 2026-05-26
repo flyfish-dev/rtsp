@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "RTSP Web Player Runtime",
+  "version": "0.1.4",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp4drk5oNgDXygPXTdpoHa4bje2UUl8/ZF45enLG/Tz7AKfSoZngZVBkSSTrtXZqJ755PJNA9+h2nkZUPVlhFbuRUtGQxtSVeXag2kwDw89QlYSpW0yxHro/rSXaLEoTGlN0hE49FtTLU6eXB5vNw+pcu0ziFd/7FyFAOISNBChjeyKOKwocJ/lxyJmkBl7wszvP3dPKYh3wyZrvD9giTflSHd5Racg6ISDJ05s2+D8dOVPMi3+vA4f/x5nJvjR88rucjpCv/hGtuMoOEOiqHmGp/wlQDIjwwgGbNzR9ymvHyKhtjkcs6EVx6GCx0x/GQ95tgeG+ZqkaS/mvcQv1hlwIDAQAB",
+  "description": "Native Go RTSP runtime + WebCodecs player component for H.264 RTSP streams.",
+  "permissions": ["nativeMessaging", "storage"],
+  "host_permissions": ["http://127.0.0.1/*", "ws://127.0.0.1/*"],
+  "background": {
+    "service_worker": "service_worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "RTSP Web Player",
+    "default_popup": "popup/popup.html"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content/rtsp-component.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["player/player.html", "player/player.js", "player/player.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
