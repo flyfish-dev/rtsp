@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#07121d"/>
+      <stop offset="0.52" stop-color="#0b1d24"/>
+      <stop offset="1" stop-color="#151a23"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#132c36"/>
+      <stop offset="1" stop-color="#0d171f"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="22" flood-color="#000" flood-opacity=".38"/>
+    </filter>
+    <style>
+      .title { font: 700 48px "Hiragino Sans GB", "Heiti SC", sans-serif; fill: #f4fbff; }
+      .subtitle { font: 400 22px "Hiragino Sans GB", "Heiti SC", sans-serif; fill: #b7cbd3; }
+      .card-title { font: 700 28px "Hiragino Sans GB", "Heiti SC", sans-serif; fill: #eafcff; }
+      .card-text { font: 400 19px "Hiragino Sans GB", "Heiti SC", sans-serif; fill: #c8d9df; }
+      .pill { font: 500 17px "Hiragino Sans GB", "Heiti SC", sans-serif; fill: #ddfff7; }
+      .small { font: 400 18px "Hiragino Sans GB", "Heiti SC", sans-serif; fill: #a9bdc5; }
+    </style>
+  </defs>
+  <rect width="1200" height="720" fill="url(#bg)"/>
+  <circle cx="1030" cy="90" r="190" fill="#173844" opacity=".36"/>
+  <circle cx="86" cy="642" r="210" fill="#143b44" opacity=".42"/>
+  <path d="M136 160 C308 82 420 250 594 174 S886 120 1048 206" fill="none" stroke="#60e4cf" stroke-opacity=".25" stroke-width="2"/>
+  <text class="title" x="70" y="92">RTSP Player 的三条落地路径</text>
+  <text class="subtitle" x="72" y="132">一个 Go Gateway，面向网页、组件工程与原生桌面应用共享同一条低延迟视频通道。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="190" width="320" height="330" rx="24" fill="url(#card)" stroke="#3bd4bd" stroke-opacity=".45"/>
+    <rect x="440" y="190" width="320" height="330" rx="24" fill="url(#card)" stroke="#74b9ff" stroke-opacity=".42"/>
+    <rect x="810" y="190" width="320" height="330" rx="24" fill="url(#card)" stroke="#f7c46c" stroke-opacity=".42"/>
+  </g>
+
+  <text class="card-title" x="110" y="250">Chrome 扩展版</text>
+  <text class="card-text" x="110" y="300">业务网页直接写</text>
+  <text class="card-text" x="110" y="330">&lt;rtsp-player&gt;</text>
+  <text class="card-text" x="110" y="372">扩展负责 iframe 播放器、</text>
+  <text class="card-text" x="110" y="402">授权域名与 Native Runtime。</text>
+  <rect x="110" y="444" width="180" height="38" rx="19" fill="#123d42" stroke="#58e7ce" stroke-opacity=".5"/>
+  <text class="pill" x="132" y="469">适合内网系统</text>
+
+  <text class="card-title" x="480" y="250">通用组件 SDK</text>
+  <text class="card-text" x="480" y="300">Web Component、JS、</text>
+  <text class="card-text" x="480" y="330">React、Vue 同步提供。</text>
+  <text class="card-text" x="480" y="372">可放入看板、弹窗、</text>
+  <text class="card-text" x="480" y="402">大屏与多画面布局。</text>
+  <rect x="480" y="444" width="196" height="38" rx="19" fill="#142d44" stroke="#78c5ff" stroke-opacity=".5"/>
+  <text class="pill" x="502" y="469">适合前端工程</text>
+
+  <text class="card-title" x="850" y="250">Electron / Tauri</text>
+  <text class="card-text" x="850" y="300">应用内启动 Go sidecar，</text>
+  <text class="card-text" x="850" y="330">无需安装 Chrome 扩展。</text>
+  <text class="card-text" x="850" y="372">面向桌面监控台、</text>
+  <text class="card-text" x="850" y="402">离线工具与一体化交付。</text>
+  <rect x="850" y="444" width="206" height="38" rx="19" fill="#3c2d15" stroke="#ffd37f" stroke-opacity=".5"/>
+  <text class="pill" x="872" y="469">适合原生应用</text>
+
+  <path d="M230 562 H970" stroke="#4de1c9" stroke-opacity=".35" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="230" cy="562" r="8" fill="#60e4cf"/>
+  <circle cx="600" cy="562" r="8" fill="#8acaff"/>
+  <circle cx="970" cy="562" r="8" fill="#ffd37f"/>
+  <rect x="348" y="595" width="504" height="56" rx="28" fill="#0c161d" stroke="#4de1c9" stroke-opacity=".32"/>
+  <text class="small" x="383" y="630">WebRTC 优先，兼容 H.264/H.265；失败时回退 WebSocket + WebCodecs</text>
+</svg>
