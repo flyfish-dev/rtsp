@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <title>RTSP Component Demo</title>
+  <style>
+    body { margin: 0; padding: 24px; font-family: system-ui, sans-serif; background: #202020; color: #fff; }
+    input { width: min(920px, 100%); padding: 10px; border-radius: 6px; border: 1px solid #555; background: #111; color: #fff; }
+    button { padding: 10px 14px; border: 0; border-radius: 6px; margin-left: 8px; cursor: pointer; }
+    rtsp-player { margin-top: 16px; display: block; width: min(960px, 100%); height: 540px; }
+    .hint { color: #bbb; font-size: 13px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <h1>RTSP Web Component Demo</h1>
+  <p class="hint">先在扩展弹窗中允许此页面 origin，然后输入 RTSP URL。默认 WebRTC first，失败回退 WebSocket/WebCodecs。</p>
+  <input id="url" value="rtsp://user:pass@192.168.1.64:554/Streaming/Channels/101" />
+  <button id="play">播放</button>
+
+  <rtsp-player id="player" transport="auto" codec="auto" controls autoplay></rtsp-player>
+
+  <script>
+    const input = document.querySelector('#url');
+    const player = document.querySelector('#player');
+    document.querySelector('#play').onclick = () => player.setAttribute('url', input.value);
+    player.addEventListener('ready', () => console.log('RTSP ready'));
+    player.addEventListener('error', (event) => console.error('RTSP error', event.detail));
+  </script>
+</body>
+</html>
