@@ -1,0 +1,4 @@
+23f9fd8f5655cc155ab3d7ca2a5c7f64acf469a40a2a8f509f407cd31a47cd93  rtsp-linux-installer.tar.gz
+5b4736bfb7acd5b0019e0206ea1d73d3178e31cda6817d7fd5638806da88db2e  rtsp-macos-installer.dmg
+fbb904ad07791861a1c6b9d38647971386040378acd27281a9ca083767b1f792  rtsp-macos-installer.zip
+d8b1102afd63ef666f843a799a1ec519d4e54daef1f6e681100fda31d41f18e8  rtsp-windows-installer.zip
